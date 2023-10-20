@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Instrucciones del Juego</title>
+  <style>
+    body {
+      background-color: #f1f1f1;
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+
+    p {
+      color: #666;
+    }
+
+    .instructions {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #b93f3f57;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        transition: background-color 0.5s;
+        margin: 10px;
+      }
+  
+    
+  </style>
+</head>
+
+<body>
+  <div class="instructions">
+    <h1>Instrucciones del Juego</h1>
+    <p>Bienvenido al juego Laberinto Utemita.</p>
+    <p>El objetivo del juego es encontrar la salida del laberinto en el mejor tiempo posible.</p>
+    <p>Para jugar, utiliza las siguientes teclas:</p>
+    <ul>
+      <li><strong>Flecha arriba</li>
+      <li><strong>Flecha izquierda</li>
+      <li><strong>Flecha abajo</li>
+      <li><strong>Flecha derecha</li>
+    </ul>
+    <p>Recorre el laberinto, y llega a la salida, tu puedes!.</p>
+    <h2>¡Buena suerte y diviértete!</h2>
+  </div>
+
+
+
+  <div>
+    <button onclick="regresar()">Regresar
+    </button>
+
+    <script>
+
+        function regresar() {
+            // Redireccionar al juego
+            window.location.href = "perfil.html";
+          }
+          var audio = new Audio('modelos/instrucc.mp3');
+
+          // Reproducir el audio
+          audio.play();
+
+
+    </script>
+
+</body>
+
+</html>

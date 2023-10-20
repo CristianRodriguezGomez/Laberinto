@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+  <title>Menú de Juego</title>
+  <style>
+    body {
+      background-color: #65ddddb0;
+      text-align: center;
+    }
+
+    h1 {
+      color: #220909;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    p {
+      color: #0f0f0f;
+      transition: color 1s;
+    }
+
+    button {
+      background-color: #e60c0c5f;
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.5s;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: #141414b0;
+    }
+     body {
+      overflow-x: hidden;
+      overflow-y: hidden;
+
+    }
+
+  </style>
+</head>
+
+<body>
+  <img src="modelos/perfil.jpg" alt="Imagen" width="150" height="150">
+
+  <h1>LABERINTO UTEMITA</h1>
+  <p>EL ARTE DE JUGAR ABRE PUERTAS A LA FELICIDAD</p>
+
+  <div>
+    <img src="modelos/lab.jpg" alt="Imagen" width="450" height="300">
+  </div>
+  <div>
+    <button onclick="bienvenida()">BIENVENIDA</button>
+    <button onclick="inicarjuego()">INICIAR JUEGO</button>
+    <button onclick="instrucciones()">INSTRUCCIONES</button>
+    <button onclick="creditos()">CRÉDITOS</button>
+  </div>
+
+  <script>
+   
+
+  
+ 
+
+    function inicarjuego() {
+      // Redireccionar al juego
+      window.location.href = "Nivel1.html";
+    }
+
+    function instrucciones() {
+      // Redireccionar a la página de instrucciones
+      window.location.href = "Instrucciones.html";
+    }
+
+    function creditos() {
+      // Redireccionar a la página de créditos
+      window.location.href = "Creditos.html";
+
+
+    }
+    function bienvenida(){
+    
+      var audio = new Audio('modelos/menu.mp3');
+      // Reproducir el audio
+      audio.play();
+    }
+
+   
+  </script>
+</body>
+
+</html>

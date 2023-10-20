@@ -1,0 +1,358 @@
+<html>
+
+
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+</head>
+
+<body>
+
+  <div class="row">
+    <canvas width="600" height="800" id="miCanvas"></canvas>
+
+  </div>
+  <title>NIVEL 1</title>
+
+  <style>
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    body {
+      overflow-x: hidden;
+      overflow-y: hidden;
+
+    }
+  </style>
+ 
+
+  <script type="importmap">
+                {
+                    "imports": {
+                        "three": "../build/three.module.js",
+                        "three/addons/": "../jsm/"
+                    }
+                }
+            </script>
+  <script src="build/sweetalert2.js"></script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+    import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+    const canvas = document.getElementById('miCanvas');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000)
+
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth /
+      window.innerHeight, 0.1, 100);
+
+    camera.position.z = 0;
+    camera.position.y = 55;
+
+
+    //////////////////////RELOJ///////////////////////////////////////////77
+    let minutos = 0;
+    let segundos = 0;
+    let timeMesh;
+    let jugando = true;
+    function funtiempo() {
+
+      segundos++;
+
+      if (segundos === 60) {
+        minutos++;
+        segundos = 0;
+      }
+
+      console.log("Minutos: " + minutos + ", Segundos: " + segundos);
+      const loadd = new FontLoader()
+      loadd.load('fonts/overdrive.json', function (font) {
+        let timeString = ""
+        if (minutos < 10) timeString += '0';
+        timeString += minutos.toString()
+        timeString += ':';
+        if (segundos < 10) timeString += '0';
+        timeString += segundos.toString()
+
+
+        const geo2 = new TextGeometry(timeString, {
+          font: font,
+          size: 2,
+          height: 2,
+        })
+        scene.remove(timeMesh)
+        timeMesh = new THREE.Mesh(geo2, [
+          new THREE.MeshPhongMaterial({ color: 0xffffff }),
+          new THREE.MeshPhongMaterial({ color: 0x808080 }),
+        ])
+        timeMesh.castShadow = true
+        timeMesh.position.set(-24, 16, -5.5)
+        timeMesh.rotation.set(30, 1, 0)
+        scene.add(timeMesh)
+
+
+
+      })
+      if (jugando)
+        setTimeout(funtiempo, 1000);
+    }
+
+    // Iniciar el temporizador
+    funtiempo();
+
+
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    //////////////////////DATOS DEL CUBO///////////////////////////////////////////77
+
+    const anchoCubo = 2;
+    const altoCubo = 2;
+    const profundidadCubo = 2;
+    const geometry = new THREE.BoxGeometry(anchoCubo, altoCubo, profundidadCubo);
+    const material = new THREE.MeshPhongMaterial({ color: 0x873600 }); //color de cubos
+    //////////////////////DATOS DE LA ESFERA///////////////////////////////////////////77
+
+    const radiosphere = 1
+    const anchosphere = 32
+    const altosphere = 16
+    const spheregeometry = new THREE.SphereGeometry(radiosphere, anchosphere, altosphere);
+    const spherematerial = new THREE.MeshBasicMaterial({ color: 0xEE8948 });
+
+
+
+
+    //////////////////////AUDIO///////////////////////////////////////////77
+
+
+    const audioLoader = new THREE.AudioLoader();
+    const listener = new THREE.AudioListener();
+    camera.add(listener); // Agregar el listener al objeto de la cámara
+
+
+    const sound2 = new THREE.PositionalAudio(listener);
+    audioLoader.load('modelos/cion1.mp3', (buffer) => {
+      sound2.setBuffer(buffer);
+      sound2.setRefDistance(20);
+      sound2.play();
+    });
+
+
+    const sound1 = new THREE.PositionalAudio(listener);
+    audioLoader.load('modelos/nivelone.mp3', (buffer) => {
+      sound1.setBuffer(buffer);
+      sound1.setRefDistance(40);
+      sound1.play();
+    });
+   
+
+    //////////////////////TEXTO///////////////////////////////////////////77
+
+    const loadd = new FontLoader()
+    loadd.load('fonts/overdrive.json', function (font) {
+      const geo1 = new TextGeometry('NIVEL 1', {
+        font: font,
+        size: 3,
+        height: 1,
+      })
+
+      const textMesh = new THREE.Mesh(geo1, [
+        new THREE.MeshPhongMaterial({ color: 0xEE0909 }),
+        new THREE.MeshPhongMaterial({ color: 0xEE8948 }),
+      ])
+      textMesh.castShadow = true
+      textMesh.position.set(-28, 20, -7)
+
+      textMesh.rotation.set(30, 1, 0)
+
+      // textMesh.rotation.x=10
+
+      scene.add(textMesh)
+    })
+
+    //////////////////////MATRIZ DE LAS PAREDES///////////////////////////////////////////77
+
+
+    const cubosMatrix = [
+
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1],
+      [1, 2, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+
+    ];
+
+
+    // Crear un cubo en cada posición de la matriz que no sea 0
+
+    for (let j = 0; j < 20; j++) {
+      for (let i = 0; i < 20; i++) {
+        if (cubosMatrix[j][i] == 1) {
+
+
+
+          // Crear un cargador de textura
+          const textureLoader = new THREE.TextureLoader();
+
+          // Cargar la imagen
+          const texture = textureLoader.load('modelos/ladrillo0.jpg');
+
+          // Crear un material utilizando la textura
+          const material = new THREE.MeshBasicMaterial({ map: texture });
+
+          // Crear una geometría de cubo
+          //const geometry = new THREE.BoxGeometry();
+          const cube = new THREE.Mesh(geometry, material);
+          cube.position.set(i * anchoCubo - 19 * anchoCubo / 2, 1, j * profundidadCubo - 19 * profundidadCubo / 2);
+          scene.add(cube);
+          //cubos.push(cube);
+
+
+
+        }
+        else if (cubosMatrix[j][i] == 2) {
+          //const cube = new THREE.Mesh(geometry, material);
+
+          const sphere = new THREE.Mesh(spheregeometry, spherematerial);
+          sphere.position.set(i * anchoCubo - 19 * anchoCubo / 2, 1, j * profundidadCubo - 19 * profundidadCubo / 2);
+          scene.add(sphere); // Agrega
+
+          //MOVIMIENTO DE LA ESFERA
+          document.addEventListener('keydown', (event) => {
+
+            var POSX = Math.trunc((sphere.position.x * 2 + (19 * anchoCubo)) / (2 * anchoCubo))
+            var POSZ = Math.trunc((sphere.position.z * 2 + (19 * profundidadCubo)) / (2 * profundidadCubo))
+            
+            console.log(POSX, POSZ)
+
+            if (cubosMatrix[POSZ][POSX] == 3) {
+              sphere.position.z -= 1;
+
+              jugando = false
+
+              sound2.stop();
+
+              Swal.fire({
+                title: 'NIVEL 1 LOGRADO',
+                text: 'Serás redirigido al NIVEL 2 en 5 segundos',
+                icon: 'success',
+                timer: 5000, // Tiempo en milisegundos (5 segundos)
+                showCancelButton: false,
+                showConfirmButton: false
+              }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                  // Redireccionar a otra página
+                  window.location.href = 'Nivel2.html';
+                }
+              });
+              // scene.remove(timeMesh)
+            }
+
+            switch (event.code) {
+
+              case 'ArrowLeft': //izquierda
+
+                if (cubosMatrix[POSZ][POSX - 1] == 0) {
+                  sphere.position.x -= 1;
+                }
+
+                //console.log(sphere.position.x)
+                break;
+              case 'ArrowRight': //derecha
+
+                if (cubosMatrix[POSZ][POSX + 1] == 0) {
+                  sphere.position.x += 1;
+
+                }
+                break;
+
+              case 'ArrowUp': //arriba
+
+                if (cubosMatrix[POSZ-1][POSX] == 0 || cubosMatrix[POSZ-1][POSX] == 3) {
+                  sphere.position.z -= 1;
+
+                }
+                break;
+              case 'ArrowDown': //abajo
+
+                if (cubosMatrix[POSZ + 1][POSX] == 0) {
+                  sphere.position.z += 1;
+
+                  break;
+                }
+            }
+
+
+          });
+        }
+
+      }
+    }
+
+
+    //funtiempo()
+
+
+    //////////////////////LUZ///////////////////////////////////////////77
+
+    // Crea una luz direccional
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+
+    scene.add(directionalLight);
+
+    const controls = new OrbitControls(camera, canvas);
+
+
+    //////////////////////ANIMACION///////////////////////////////////////////77
+
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+
+
+      renderer.render(scene, camera);
+    }
+
+    animate()
+    const plano = new THREE.GridHelper(40, 40);
+    plano.material = material; // Asignar el material al objeto GridHelper
+    scene.add(plano);
+
+
+
+  </script>
+
+
+</body>
+
+</html>
